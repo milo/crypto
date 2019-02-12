@@ -19,23 +19,34 @@ final class SodiumAsymmetricCrypt implements Crypt
 	private $publicKey;
 
 
-	public function __construct(string $secretHex, string $publicHex)
+	public function __construct(string $secretKey, string $publicKey)
 	{
 		if (!\extension_loaded('sodium')) {
 			throw new \LogicException('PHP extension sodium is missing.');
 		}
 
+		$this->secretKey = $secretKey;
+		$this->publicKey = $publicKey;
+	}
+
+
+	public static function fromHexKeys(string $secretKey, string $publicKey): self
+	{
 		try {
-			$this->secretKey = \sodium_hex2bin($secretHex);
+			$secretKey = \sodium_hex2bin($secretKey);
 		} catch (\SodiumException $e) {
+			\sodium_memzero($secretKey);
 			throw new CryptException('Cannot load secret key.', 0, $e);
 		}
 
 		try {
-			$this->publicKey = \sodium_hex2bin($publicHex);
+			$publicKey = \sodium_hex2bin($publicKey);
 		} catch (\SodiumException $e) {
+			\sodium_memzero($secretKey);
 			throw new CryptException('Cannot load public key.', 0, $e);
 		}
+
+		return new self($secretKey, $publicKey);
 	}
 
 

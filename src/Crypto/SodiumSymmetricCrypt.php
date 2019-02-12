@@ -16,17 +16,26 @@ final class SodiumSymmetricCrypt implements Crypt
 	private $secretKey;
 
 
-	public function __construct(string $secretHex)
+	public function __construct(string $secretKey)
 	{
 		if (!\extension_loaded('sodium')) {
 			throw new \LogicException('PHP extension sodium is missing.');
 		}
 
+		$this->secretKey = $secretKey;
+	}
+
+
+	public static function fromHexKey(string $secretKey): self
+	{
 		try {
-			$this->secretKey = \sodium_hex2bin($secretHex);
+			$secretKey = \sodium_hex2bin($secretKey);
 		} catch (\SodiumException $e) {
+			\sodium_memzero($secretKey);
 			throw new CryptException('Cannot load secret key.', 0, $e);
 		}
+
+		return new self($secretKey);
 	}
 
 
