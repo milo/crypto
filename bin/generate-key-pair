@@ -1,0 +1,8 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+$pair = \sodium_crypto_box_keypair();
+echo "Secret HEX: " . \sodium_bin2hex(\sodium_crypto_box_secretkey($pair)) . "\n";
+echo "Public HEX: " . \sodium_bin2hex(\sodium_crypto_box_publickey($pair)) . "\n";
