@@ -48,7 +48,7 @@ final class SodiumSymmetricCrypt implements Crypt
 			);
 
 		} catch (\SodiumException $e) {
-			\sodium_memzero($nonce);
+			isset($nonce) && \is_string($nonce) && \sodium_memzero($nonce);
 			throw new CryptException('Message encryption failed.', 0, $e);
 
 		} finally {

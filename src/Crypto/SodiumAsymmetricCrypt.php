@@ -62,12 +62,12 @@ final class SodiumAsymmetricCrypt implements Crypt
 			);
 
 		} catch (\SodiumException $e) {
-			\sodium_memzero($nonce);
+			isset($nonce) && \is_string($nonce) && \sodium_memzero($nonce);
 			throw new CryptException('Message encryption failed.', 0, $e);
 
 		} finally {
 			\sodium_memzero($message);
-			\sodium_memzero($keyPair);
+			isset($keyPair) && \is_string($keyPair) && \sodium_memzero($keyPair);
 		}
 
 		return \base64_encode($nonce . $ciphered);
@@ -102,7 +102,7 @@ final class SodiumAsymmetricCrypt implements Crypt
 			throw new CryptException('Message decryption failed.', 0, $e);
 
 		} finally {
-			\sodium_memzero($keyPair);
+			isset($keyPair) && \is_string($keyPair) && \sodium_memzero($keyPair);
 		}
 
 		return $message;
