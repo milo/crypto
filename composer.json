@@ -1,0 +1,27 @@
+{
+    "name": "milo/crypto",
+    "description": "Wrappers for crypto functions.",
+    "type": "library",
+    "license": ["MIT", "GPL-2.0-only", "GPL-3.0-only"],
+    "authors": [
+        {
+            "name": "Miloslav Hůla",
+            "email": "miloslav.hula@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2"
+    },
+    "suggest": {
+        "ext-sodium": "To be able used SodiumSymmetricCrypt and SodiumAsymmetricCrypt."
+    },
+    "autoload": {
+        "psr-4": {
+            "Milo\\Crypto\\": "src/Crypto/"
+        }
+    },
+    "bin": [
+        "bin/generate-key-pair",
+        "bin/generate-shared-key"
+    ]
+}
